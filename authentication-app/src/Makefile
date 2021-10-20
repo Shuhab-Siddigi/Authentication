@@ -7,4 +7,4 @@ client: build
 	java -cp ../bin Client
 
 server: build
-	java -cp ../bin Server 
+	java -cp ../bin ApplicationServer.java
