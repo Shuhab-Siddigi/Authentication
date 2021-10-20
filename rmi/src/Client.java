@@ -1,3 +1,6 @@
+// Step 4
+// Lookup specific endpoint from server
+// Lhen recive object 
 import java.rmi.*;
 
 public class Client {
@@ -12,11 +15,13 @@ public class Client {
     String message = "Hello Friend!";
 
     try {
-      System.out.println("Sendt message: " + message);
-      // lookup method to find reference of remote object
-      IHello access = (IHello) Naming.lookup(connectionString);
 
-      String answer = access.query(message);
+      // lookup method to find reference of remote object
+      IHello remoteEndpoint = (IHello) Naming.lookup(connectionString);
+      
+      System.out.println("Sendt message: " + message);
+      // query message to remote end point
+      String answer = remoteEndpoint.query(message);
 
       System.out.println("Got answer: " + answer);
 

@@ -1,3 +1,8 @@
+// Step 3
+// Use Interface and class
+// Create rmiregistry
+// Bind class interface obj to endpoint
+
 import java.rmi.*;
 import java.rmi.registry.*;
 
