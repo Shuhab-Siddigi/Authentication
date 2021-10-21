@@ -5,6 +5,8 @@ package dtu.printer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import dtu.interfaces.IHello;
+
 public class Hello extends UnicastRemoteObject implements IHello {
 
     // Default constructor to throw RemoteException

@@ -4,7 +4,7 @@ package dtu.client;
 // Lhen recive object 
 import java.rmi.*;
 
-import dtu.printer.IHello;
+import dtu.interfaces.IHello;
 
 public class Client {
   public static void main(String args[]) {
