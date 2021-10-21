@@ -20,7 +20,7 @@ public class Server {
             // implementation class
             // OPS
             // (Iterface = new Class )
-            Printer hello = new Printer();
+            Printer printer = new Printer();
 
             // rmiregistry within the server JVM with
             // port number 1900
@@ -28,7 +28,7 @@ public class Server {
 
             // Binds the remote object by the name
             // geeksforgeeks
-            Naming.rebind(connectionString, hello);
+            Naming.rebind(connectionString, printer);
 
         } catch (Exception e) {
             System.out.println(e);

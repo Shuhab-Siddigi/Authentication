@@ -15,20 +15,23 @@ public class Client {
     String endpoint = "/greeting";
     String connectionString = "rmi://" + IP + port + endpoint;
 
-    String message = "Hello Friend!";
-
+    String filename = "myfile.txt";
+    String printer = "XEROX X23 OVERPOWER!!";
     try {
 
       // lookup method to find reference of remote object
       IPrinter remoteEndpoint = (IPrinter) Naming.lookup(connectionString);
       
-      System.out.println("Sendt message: " + message);
+      System.out.println("Sendt fiile: " + filename + " To: "+printer);
       // query message to remote end point
-      String answer = remoteEndpoint.query(message);
-      String answer2 = remoteEndpoint.print(message);
+      String respone = remoteEndpoint.print(filename,printer);
 
-      System.out.println("Got answer: " + answer);
-      System.out.println("Got answer2: " + answer2);
+      System.out.println("Got respone: " + respone);
+
+      // query message to remote end point
+      respone = remoteEndpoint.topQueue(filename,4);
+
+      System.out.println("Got respone: " + respone);
 
     } catch (Exception e) {
       System.out.println(e);

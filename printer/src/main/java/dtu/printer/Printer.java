@@ -15,40 +15,69 @@ public class Printer extends UnicastRemoteObject implements IPrinter {
         super();
     }
 
-    // Implementation of the query interface
-    public String query(String greeting) throws RemoteException {
-
-        String answer;
-
-        System.out.println("Got Message: " + greeting);
-        // OPS == does not work!
-        if (greeting.equals("Hello Friend!")) {
-            answer = "Good day to you sir!";
-        } else {
-            answer = "Whae?";
-        }
-
-        System.out.println("Returned answer: "+ answer);
-
-        return answer;
-    }
-
     
     // Implementation of the query interface
-    public String print(String greeting) throws RemoteException {
-
-        String answer;
-
-        System.out.println("Got Message: " + greeting);
-        // OPS == does not work!
-        if (greeting.equals("Hello Friend!")) {
-            answer = "Good day to you sir!";
-        } else {
-            answer = "Whae?";
-        }
-
-        System.out.println("Returned answer From Printer: "+ answer);
-
-        return answer;
+    public String print(String filename, String printer) throws RemoteException {
+        String command = "String print(String "+filename+", String "+printer+")";
+        System.out.println(command);  
+        return command;
     }
+
+        // lists the print queue on the user's display in lines of the form <job number>
+    // <file name>
+    public String queue(String printer) throws RemoteException{
+        String command = "String queue("+printer+")";
+        System.err.println(command);
+        return command;
+    };
+
+    // moves job to the top of the queue
+    public String topQueue(String printer, int job) throws RemoteException{
+        String command = "String topQueue("+printer+","+job+")";
+        System.err.println(command);
+        return command;
+    };
+
+    // starts the print server
+    public String start() throws RemoteException{
+        String command = "String start()";
+        System.err.println(command);
+        return command;
+    };
+
+    // stops the print server
+    public String stop() throws RemoteException{
+        String command = "String stop()";
+        System.err.println(command);
+        return command;
+    };
+
+    // stops the print server, clears the print queue and starts the print server again
+    public String restart() throws RemoteException{
+        String command = "String restart()";
+        System.err.println(command);
+        return command;
+    };
+
+    // prints status of printer on the user's display
+    public String status(String printer) throws RemoteException{
+        String command = "String status(String "+printer+")";
+        System.err.println(command);
+        return command;
+    };
+
+    // prints the value of the parameter on the user's display
+    public String readConfig(String parameter) throws RemoteException{
+        String command = "String readConfig(String "+parameter+")";
+        System.err.println(command);
+        return command;
+    };
+
+    // sets the parameter to value
+    public String setConfig(String parameter, String value) throws RemoteException{
+        String command = "String setConfig("+value+","+value+")";
+        System.err.println(command);
+        return command;
+    };
+
 }
