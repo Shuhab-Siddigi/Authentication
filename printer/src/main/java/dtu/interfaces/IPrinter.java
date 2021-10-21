@@ -35,4 +35,8 @@ public interface IPrinter extends Remote {
 
     // sets the parameter to value
     public String setConfig(String parameter, String value) throws RemoteException;
+
+    // login to be able to use printer
+    public boolean login(String username, String password) throws RemoteException;
+
 }

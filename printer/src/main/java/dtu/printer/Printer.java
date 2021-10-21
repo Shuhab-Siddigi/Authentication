@@ -4,15 +4,22 @@ package dtu.printer;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 import dtu.interfaces.IPrinter;
 
 public class Printer extends UnicastRemoteObject implements IPrinter {
 
+    private ArrayList<User> users = new ArrayList<>();
+    
     // Default constructor to throw RemoteException
     // from its parent constructor
     Printer() throws RemoteException {
         super();
+        for (int i = 0; i < 10; i++){
+        users.add(new User("admin"+i,"admin"+i));
+        }
+        
     }
 
     
@@ -79,5 +86,17 @@ public class Printer extends UnicastRemoteObject implements IPrinter {
         System.err.println(command);
         return command;
     };
+
+    public boolean login(String username,String password){
+
+        for (User user : users) {
+   
+            if(user.getPassword().equals(password) && user.getUsername().equals(username)){
+                System.out.println("Got User: "+ user.getUsername()+ " " + "Got Password: " + user.getPassword());
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

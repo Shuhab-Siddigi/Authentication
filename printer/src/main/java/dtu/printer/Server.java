@@ -6,8 +6,13 @@ package dtu.printer;
 
 import java.rmi.*;
 import java.rmi.registry.*;
+import java.util.ArrayList;
 
 public class Server {
+
+    
+    ArrayList<User> users = new ArrayList<>();
+
     public static void main(String args[]) {
 
         String IP = "localhost:";
@@ -21,7 +26,7 @@ public class Server {
             // OPS
             // (Iterface = new Class )
             Printer printer = new Printer();
-
+            
             // rmiregistry within the server JVM with
             // port number 1900
             LocateRegistry.createRegistry(1900);

@@ -22,7 +22,8 @@ public class Client {
       // lookup method to find reference of remote object
       IPrinter remoteEndpoint = (IPrinter) Naming.lookup(connectionString);
       
-      System.out.println("Sendt fiile: " + filename + " To: "+printer);
+      System.out.println("Sendt file: " + filename + " To: "+printer);
+      
       // query message to remote end point
       String respone = remoteEndpoint.print(filename,printer);
 
@@ -32,6 +33,11 @@ public class Client {
       respone = remoteEndpoint.topQueue(filename,4);
 
       System.out.println("Got respone: " + respone);
+
+      // query message to remote end point
+      boolean login = remoteEndpoint.login("admin1","admin1");
+
+      System.out.println("Logged in: " + login);
 
     } catch (Exception e) {
       System.out.println(e);
