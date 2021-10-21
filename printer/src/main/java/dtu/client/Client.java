@@ -4,7 +4,7 @@ package dtu.client;
 // Lhen recive object 
 import java.rmi.*;
 
-import dtu.interfaces.IHello;
+import dtu.interfaces.IPrinter;
 
 public class Client {
   public static void main(String args[]) {
@@ -20,13 +20,15 @@ public class Client {
     try {
 
       // lookup method to find reference of remote object
-      IHello remoteEndpoint = (IHello) Naming.lookup(connectionString);
+      IPrinter remoteEndpoint = (IPrinter) Naming.lookup(connectionString);
       
       System.out.println("Sendt message: " + message);
       // query message to remote end point
       String answer = remoteEndpoint.query(message);
+      String answer2 = remoteEndpoint.print(message);
 
       System.out.println("Got answer: " + answer);
+      System.out.println("Got answer2: " + answer2);
 
     } catch (Exception e) {
       System.out.println(e);

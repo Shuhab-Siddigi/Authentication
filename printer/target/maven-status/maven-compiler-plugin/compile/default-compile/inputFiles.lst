@@ -1,4 +1,4 @@
+/home/ss/Documents/Authentication/printer/src/main/java/dtu/printer/Printer.java
 /home/ss/Documents/Authentication/printer/src/main/java/dtu/printer/Server.java
 /home/ss/Documents/Authentication/printer/src/main/java/dtu/client/Client.java
-/home/ss/Documents/Authentication/printer/src/main/java/dtu/printer/Hello.java
-/home/ss/Documents/Authentication/printer/src/main/java/dtu/printer/IHello.java
+/home/ss/Documents/Authentication/printer/src/main/java/dtu/interfaces/IPrinter.java
