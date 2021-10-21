@@ -1,46 +1,62 @@
 package dtu.client;
+
 // Step 4
 // Lookup specific endpoint from server
 // Lhen recive object 
 import java.rmi.*;
 
-import dtu.interfaces.IPrinter;
+import dtu.auth.IAuth;
+import dtu.auth.User;
+import dtu.printer.IPrinter;
+import dtu.tgs.ITGS;
 
 public class Client {
-  public static void main(String args[]) {
+
+  public static void main(String args[]) throws RemoteException {
     // Create a connection string equal to
     // the one in the server class
-    String IP = "localhost:";
-    String port = "1900";
-    String endpoint = "/greeting";
-    String connectionString = "rmi://" + IP + port + endpoint;
+    String connectionString = "rmi://localhost:1900";
 
-    String filename = "myfile.txt";
-    String printer = "XEROX X23 OVERPOWER!!";
-    try {
+    // Clear txt message
+    // 1 Message -> Kerberos
+    User client = new User("admin", "admin");
 
-      // lookup method to find reference of remote object
-      IPrinter remoteEndpoint = (IPrinter) Naming.lookup(connectionString);
-      
-      System.out.println("Sendt file: " + filename + " To: "+printer);
-      
-      // query message to remote end point
-      String respone = remoteEndpoint.print(filename,printer);
+    try { // Try to get authentication acces
 
-      System.out.println("Got respone: " + respone);
+      IAuth auth = (IAuth) Naming.lookup(connectionString + "/Auth");
 
-      // query message to remote end point
-      respone = remoteEndpoint.topQueue(filename,4);
+      if (auth.access(client)) {
+        System.out.println("Access Granted!");
+        try { // Try to get ticket from ticket granting service
+         // System.out.println("Got Path: "+auth.tgspath(client));
+         // ITGS tgs = (ITGS) Naming.lookup(connectionString + auth.tgspath(client));
+         // System.out.println(tgs.token(client));
+        } catch (Exception e) {
+          System.out.println(e);
+        }
+      }
 
-      System.out.println("Got respone: " + respone);
+      // try { // try to get result from printer
 
-      // query message to remote end point
-      boolean login = remoteEndpoint.login("admin1","admin1");
+      //   IPrinter printer = (IPrinter) Naming.lookup(connectionString + "/Printer");
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
+      //   System.out.println(printer.print("filename", "printer"));
 
-      System.out.println("Logged in: " + login);
+      // } catch (Exception printex) {
+      //   System.out.println(printex);
+      // }
 
     } catch (Exception e) {
       System.out.println(e);
     }
+
   }
 }

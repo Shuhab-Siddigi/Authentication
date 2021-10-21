@@ -1,12 +1,23 @@
-package dtu.printer;
+package dtu.auth;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     
     private String username,password;
+    private boolean granted = false;
 
-    public User(String username, String password){
+    public User(String username, String password) {
         this.setUsername(username);
         this.setPassword(password);
+    }
+
+    public boolean isGranted() {
+        return granted;
+    }
+
+    public void setGranted(boolean granted) {
+        this.granted = granted;
     }
 
     public String getPassword() {
