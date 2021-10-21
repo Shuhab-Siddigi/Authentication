@@ -19,7 +19,7 @@ public class Server {
             // implementation class
             // OPS
             // (Iterface = new Class )
-            IHello hello = new Hello();
+            Hello hello = new Hello();
 
             // rmiregistry within the server JVM with
             // port number 1900

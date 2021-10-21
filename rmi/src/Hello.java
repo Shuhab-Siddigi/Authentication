@@ -1,8 +1,8 @@
 // Step 2 
 // Implement the IHello interface in a Hello class
 
-import java.rmi.*;
-import java.rmi.server.*;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class Hello extends UnicastRemoteObject implements IHello {
 

@@ -5,5 +5,5 @@ import java.rmi.*;
 public interface IHello extends Remote
 {
     // Declaring the method prototype
-    public String query(String search) throws RemoteException;
+    public String query(String greeting) throws RemoteException;
 }
