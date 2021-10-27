@@ -6,8 +6,6 @@ package dtu.client;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 
-import javax.print.attribute.standard.MediaSize.NA;
-
 import dtu.common.IAuth;
 import dtu.common.IPrinter;
 import dtu.common.Ticket;
