@@ -1,23 +1,14 @@
-package dtu.auth;
+package dtu.common;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
     
-    private String username,password;
-    private boolean granted = false;
+    private String username, password;
 
     public User(String username, String password) {
-        this.setUsername(username);
-        this.setPassword(password);
-    }
-
-    public boolean isGranted() {
-        return granted;
-    }
-
-    public void setGranted(boolean granted) {
-        this.granted = granted;
+        this.username = username;
+        this.password = password;
     }
 
     public String getPassword() {
