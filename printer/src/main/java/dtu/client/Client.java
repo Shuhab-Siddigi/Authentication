@@ -12,6 +12,8 @@ import dtu.common.Ticket;
 import dtu.common.User;
 
 public class Client {
+  public String PublicStringClient = "PUBKC";
+  private String PrivateKeyClient = "PRIVKC";
 
   public static void main(String args[]) throws RemoteException {
 
@@ -19,13 +21,13 @@ public class Client {
     IPrinter printer;
     Ticket ticket;
     User client = new User("admin", "admin");
-
+    
     try { // Try to get authentication acces
 
       IAuth auth = (IAuth) Naming.lookup(connectionString + "/Auth");
-
+      
       boolean login = auth.login(client);
-
+      
       System.out.println(login);
       if (login) {
         try {

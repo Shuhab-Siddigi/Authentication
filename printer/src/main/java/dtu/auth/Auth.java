@@ -9,6 +9,9 @@ import dtu.common.Ticket;
 import dtu.common.User;
 
 public class Auth extends UnicastRemoteObject implements IAuth {
+  
+  public String PublicStringAuth = "PUBKA";
+  private String PrivateKeyAuth = "PRIVKA";
 
   private ArrayList<User> users = new ArrayList<>();
 

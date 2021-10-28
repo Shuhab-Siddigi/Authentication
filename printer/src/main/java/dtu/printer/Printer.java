@@ -6,7 +6,8 @@ import java.rmi.server.UnicastRemoteObject;
 import dtu.common.IPrinter;
 import dtu.common.Ticket;
 public class Printer extends UnicastRemoteObject implements IPrinter  {
-
+    public String PublicStringPrinter = "PUBKP";
+    private String PrivateKeyPrinter = "PRIVKP";
 
     public Printer() throws RemoteException {
         super();
