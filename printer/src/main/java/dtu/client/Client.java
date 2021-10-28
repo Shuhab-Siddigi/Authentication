@@ -24,6 +24,8 @@ public class Client {
     
     try { // Try to get authentication acces
 
+     
+
       IAuth auth = (IAuth) Naming.lookup(connectionString + "/Auth");
       
       boolean login = auth.login(client);
