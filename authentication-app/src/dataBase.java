@@ -272,6 +272,7 @@ public class dataBase {
 
         //getPublicKey(readFromFile("KEY/private.key"));
         //RSAKeyGenerator("KEY");
+        System.out.println(dec);
         System.out.println("hello");
 
         System.out.println(SHA256("helo"));
