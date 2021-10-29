@@ -1,0 +1,17 @@
+	
+@startuml Kerberos 
+actor Client as C
+database Databse as D
+participant Server as S
+participant Printer as P
+
+C-> S: ServerPub(ClientPrivate(user, password))
+S-> C: ClientPub(ServerPrivate(PrinterPub(ServerPrivate(ticket)),printer adresss))
+C-> P: ClientPub(ServerPrivate(PrinterPub(ServerPrivate(ticket)),clientID))
+P-> C: ClientPub(PrinterPrivate(ClientPrinterKey))
+C-> P: CPkey(command)
+P-> C: CPkey(response_command)
+@enduml
+@startuml Ticket
+card "              Ticket \n (Client ID, Timestamp)"
+@enduml
