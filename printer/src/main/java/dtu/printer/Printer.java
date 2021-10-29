@@ -4,20 +4,40 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import dtu.common.IPrinter;
-import dtu.common.Ticket;
+import dtu.crypto.SimulatedCrypto;
 public class Printer extends UnicastRemoteObject implements IPrinter  {
-    public String PublicStringPrinter = "PUBKP";
-    private String PrivateKeyPrinter = "PRIVKP";
 
     public Printer() throws RemoteException {
         super();
         
     }
 
-    public String command(Ticket ticket) throws RemoteException {
-        
-        System.out.println(ticket.getCommand());
-        return "Command executed";
+    public String command(String command) throws RemoteException {
+        System.out.println("Recived Command: "+command);
+        command = SimulatedCrypto.DeKCG(command);
+        String[] commands = command.split(",");
+        switch(commands[0]){
+            case "Start":
+                return SimulatedCrypto.KCG(start());
+            case "Stop":
+                return SimulatedCrypto.KCG(stop());
+            case "Print":
+                return SimulatedCrypto.KCG(print(commands[1], commands[2]));
+            case "Queue":
+                return SimulatedCrypto.KCG(queue(commands[1]));
+            case "TopQueue":
+                return SimulatedCrypto.KCG(topQueue(commands[1], commands[2]));
+            case "Restart":
+                return SimulatedCrypto.KCG(restart());
+            case "Status":
+                return SimulatedCrypto.KCG(status(commands[1]));
+            case "ReadConfig":
+                return SimulatedCrypto.KCG(readConfig(commands[1]));
+            case "SetConfig":
+                return SimulatedCrypto.KCG(setConfig(commands[1], commands[2]));
+            default:
+                return "Command does not excist!!!";
+        }
     };
 
     // Implementation of the query interface
@@ -36,7 +56,7 @@ public class Printer extends UnicastRemoteObject implements IPrinter  {
     };
 
     // moves job to the top of the queue
-    public String topQueue(String printer, int job)  {
+    public String topQueue(String printer, String job)  {
         String command = "String topQueue(" + printer + "," + job + ")";
         System.err.println(command);
         return command;
@@ -83,6 +103,13 @@ public class Printer extends UnicastRemoteObject implements IPrinter  {
         String command = "String setConfig(" + value + "," + value + ")";
         System.err.println(command);
         return command;
+    }
+
+    public String reciveTicket(String ticket) throws RemoteException {
+        System.out.println(ticket);
+        ticket = SimulatedCrypto.DecryptSharedKey(ticket);
+        //System.out.println(ticket);
+        return "{|ACK|}KCG";
     }
 
  

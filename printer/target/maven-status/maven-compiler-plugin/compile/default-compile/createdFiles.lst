@@ -1,0 +1,10 @@
+dtu/common/IAuth.class
+dtu/crypto/Crypto.class
+dtu/auth/Auth.class
+dtu/common/User.class
+dtu/common/IPrinter.class
+dtu/server/Server.class
+dtu/crypto/SimulatedCrypto.class
+dtu/client/Client.class
+dtu/printer/Printer.class
+dtu/database/Database.class

@@ -2,45 +2,52 @@ package dtu.auth;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 
 import dtu.common.IAuth;
-import dtu.common.Ticket;
-import dtu.common.User;
+import dtu.crypto.SimulatedCrypto;
+import dtu.database.Database;
 
 public class Auth extends UnicastRemoteObject implements IAuth {
   
-  public String PublicStringAuth = "PUBKA";
-  private String PrivateKeyAuth = "PRIVKA";
+  private  Database db = new Database();
+  private String defikey = "Y";
+  private String identity = "Auth";
+  private String service = "Printer";
 
-  private ArrayList<User> users = new ArrayList<>();
 
   public Auth() throws RemoteException {
     super();
-    users.add(new User("admin", "admin"));
-  }
-
-
-  public boolean login(User client) throws RemoteException {
-    for (User user : users) {
-      System.out.println(user.getUsername());
-      if (client.getUsername().equals(client.getUsername()) &&
-          client.getPassword().equals(client.getPassword())){
-       return true;
-      }
+    if(db.creatTable("Users")){
+      System.out.println("Created Database");
+    };
+    
+    if( db.tryAdd("admin","admin")){
+      System.out.println("Client Added");
     }
-    return false;
   }
 
-  public String path() throws RemoteException {
-    return "/Printer" ;
+  public String requestKey(String message) throws RemoteException {
+    System.out.println("Recived Message "+message);
+    String msg = SimulatedCrypto.unSign(message);
+    msg = msg.substring(0, msg.lastIndexOf(","));
+    msg = SimulatedCrypto.Sign(msg+","+defikey+")", identity);
+    System.out.println("Returning: "+msg);
+
+    return msg;
   }
+  
+  public String login(String message) throws RemoteException {
+    System.out.println("Recieved: "+message);
+    message = SimulatedCrypto.expDencrypt(message);
+    message = SimulatedCrypto.unSign(message);
+    String[] credentials =  message.split(",");
+    if(db.getUser(credentials[0], credentials[1])){
+      System.out.println("User: "+credentials[0]+" succesfully logged in.");
+       //{|ath,p,KCG,T1,C,{|ath,C,p,KCG,T1|}skag|}exp(exp(ge,X),Y)
+      return SimulatedCrypto.EncryptSharedKey(identity+","+service+",KCG"+","+System.currentTimeMillis(), identity+","+credentials[0]+",KCG"+","+System.currentTimeMillis(), "X", "Y");
+    }
 
-
-
-  public Ticket requestTicket() throws RemoteException {
-
-    return new Ticket("command", "token", "time");
+    return null;
   }
 
 

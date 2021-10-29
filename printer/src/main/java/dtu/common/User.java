@@ -11,11 +11,11 @@ public class User implements Serializable {
     }
 
     public String getPassword() {
-        return username;
+        return password;
     }
 
     public String getUsername() {
-        return password;
+        return username;
     }
 
 

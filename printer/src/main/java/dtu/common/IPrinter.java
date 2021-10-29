@@ -7,7 +7,9 @@ import java.rmi.*;
 
 public interface IPrinter extends Remote {
   // Declaring the method prototype
-  public String command(Ticket ticket) throws RemoteException;
+  public String command(String command) throws RemoteException;
+
+  public String reciveTicket(String ticket) throws RemoteException;
 
   // // prints file filename on the specified printer
   // public String print(String filename, String printer) throws RemoteException;
