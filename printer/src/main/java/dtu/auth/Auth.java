@@ -17,11 +17,11 @@ public class Auth extends UnicastRemoteObject implements IAuth {
 
   public Auth() throws RemoteException {
     super();
-    if(db.creatTable("Users")){
+    if(db.creatTable()){
       System.out.println("Created Database");
     };
     
-    if( db.tryAdd("admin","admin")){
+    if( db.tryAdd("admin","admin","MASTER,SLAVE,JANITOR")){
       System.out.println("Client Added");
     }
   }
