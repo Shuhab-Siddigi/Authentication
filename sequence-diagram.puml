@@ -1,0 +1,23 @@
+@startuml Kerberos 
+actor Client as C
+participant Server as S
+participant Printer as P
+
+C->S: {C,ath, exp(ge,X)}inv(pk(C)) 
+S->C: {C,ath, exp(ge,Y)}inv(pk(ath))
+
+C->S: {|{C,ath,p}inv(pk(C))|}exp(exp(ge,X),Y)
+S->C: {|ath,p,KCG,T1,C,{|ath,C,p,KCG,T1|}skag  |}exp(exp(ge,X),Y)
+
+C -> P: ({|ath,C,p,KCG,T1|}skag)
+
+P -> C:  {|Payload|}KCG
+
+C -> P: {|Print_command|}KCG
+
+P -> C: {|Response_command|}KCG
+
+@enduml
+@startuml Ticket
+card "              Ticket \n (Client ID, Timestamp)"
+@enduml
