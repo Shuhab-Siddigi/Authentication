@@ -18,7 +18,7 @@ public class Client {
     String connectionString = "rmi://localhost:1900";
 
     String defikey = "X";
-    User credentials = new User("admin", "admin");
+    User credentials = new User("Alice", "Alice");
     String identity = "Client";
     String reciver = "Auth";
     String service = "Printer";
@@ -31,49 +31,47 @@ public class Client {
       IAuth auth = (IAuth) Naming.lookup(connectionString + "/Auth");
       printer = (IPrinter) Naming.lookup(connectionString + "/Printer");
       
-      System.out.println("Connected to Auth");
+      System.out.println("Client: Connected to Auth");
 
       // C->ath: {C,ath, exp(ge,X)}inv(pk(C))
-      System.out.println("Send first half");
+      System.out.println("Client: Send first half");
       String message = SimulatedCrypto.Sign(credentials.getUsername()+","+reciver+",exp(ge,"+defikey+")",identity);
-      System.out.println("Sendt Message:"+message);
+      System.out.println("Client: Sendt Message:"+message);
 
       String response = auth.requestKey(message);
-      System.out.println("Recieved: "+response);
+      System.out.println("Client: Recieved: "+response);
       
       // C->ath: {|{C,ath,p}inv(pk(C))|}exp(exp(ge,X),Y)
-      System.out.println("Login attempt: ");
+      System.out.println("Client: Login attempt: ");
       message = SimulatedCrypto.Sign(credentials.getUsername()+","+credentials.getPassword()+","+reciver+","+service, identity);
       message = SimulatedCrypto.expEncrypt(message, "X", "Y");
       String ticket = auth.login(message);
-      System.out.println("Recieved: "+ticket);
+      System.out.println("Client: Recieved: "+ticket);
 
       ticket = SimulatedCrypto.expDencrypt(ticket);
       ticket = ticket.substring(ticket.lastIndexOf("{"),ticket.length());
       
       //{|ath,C,p,KCG,T1|}skag)
-      System.out.println("Sendt Message: "+ticket);      
+      System.out.println("Client: Sendt Message: "+ticket);
       response = printer.reciveTicket(ticket);
-      System.out.println(response);
+      System.out.println("Client: Sendt Response: "+response);
 
       String command = "Start";
       command = SimulatedCrypto.KCG(command);
-      System.out.println("Sending Command: "+command);
+      System.out.println("Client: Sending Command: " + command);
       String result = printer.command(command);
       result = SimulatedCrypto.DeKCG(result);
-      System.out.println("Recieved: "+result);
-
+      System.out.println("Client: Recieved: " + result);
 
       command = "Print,somefile,Xerox";
       command = SimulatedCrypto.KCG(command);
-      System.out.println("Sending Command: "+command);
+      System.out.println("Client: Sending Command: " + command);
       result = printer.command(command);
       result = SimulatedCrypto.DeKCG(result);
-      System.out.println("Recieved: "+result);
-      //C -> p: {|Print_command|}KCG
+      System.out.println("Client: Recieved: " + result);
+      // C -> p: {|Print_command|}KCG
 
-
-      //{|Response_command|}KCG
+      // {|Response_command|}KCG
 
     } catch (Exception e) {
       System.out.println(e);
