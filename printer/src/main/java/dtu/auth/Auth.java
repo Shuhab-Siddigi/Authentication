@@ -28,7 +28,7 @@ public class Auth extends UnicastRemoteObject implements IAuth {
     return msg;
   }
 
-  public String login(String message) throws RemoteException {
+  public String loginACL(String message) throws RemoteException {
     String ACLList = new String();
     System.out.println("Auth: Recieved: " + message);
     message = SimulatedCrypto.expDencrypt(message);
@@ -40,6 +40,25 @@ public class Auth extends UnicastRemoteObject implements IAuth {
       // {|ath,p,KCG,T1,C,{|ath,C,p,KCG,T1,ACLList|}skag|}exp(exp(ge,X),Y)
       String response = SimulatedCrypto.EncryptSharedKey(identity + "," + service + ",KCG" + "," + System.currentTimeMillis(),
           identity + "," + credentials[0] + ",KCG" + "," + System.currentTimeMillis() + ",[" + ACLList+"]", "X", "Y");
+      System.out.println("Auth: Returning: " + response);
+      return response;
+    }
+
+    return null;
+  }
+ 
+  public String loginRBAC(String message) throws RemoteException {
+    String RBACFunctions = new String();
+    System.out.println("Auth: Recieved: " + message);
+    message = SimulatedCrypto.expDencrypt(message);
+    message = SimulatedCrypto.unSign(message);
+    String[] credentials = message.split(",");
+    if (db.getUser(credentials[0], credentials[1])) {
+      System.out.println("Auth: user " + credentials[0] + " succesfully logged in.");
+      RBACFunctions = db.getRBACRoleFunctions(credentials[0], credentials[1]);
+      // {|ath,p,KCG,T1,C,{|ath,C,p,KCG,T1,ACLList|}skag|}exp(exp(ge,X),Y)
+      String response = SimulatedCrypto.EncryptSharedKey(identity + "," + service + ",KCG" + "," + System.currentTimeMillis(),
+          identity + "," + credentials[0] + ",KCG" + "," + System.currentTimeMillis() + ",[" + RBACFunctions+"]", "X", "Y");
       System.out.println("Auth: Returning: " + response);
       return response;
     }

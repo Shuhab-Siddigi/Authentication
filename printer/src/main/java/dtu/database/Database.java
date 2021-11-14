@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.sql.ResultSet;
 import dtu.crypto.Crypto;
 
@@ -154,21 +156,39 @@ public class Database {
     }
   }
 
-  public boolean getRBACRoleFunctions(String user, String password) {
-    String query1;
-    PreparedStatement stmt1;
+  public String getRBACRoleFunctions(String user, String password) {
+
+    // Get Role(s) from user
+    String query = "SELECT Roles FROM Users WHERE User = ? AND Password = ?";
+    String result = new String();
     try {
-      query1 = "SELECT User FROM Users WHERE Users.User = ? AND Users.Password = ?";
-      stmt1 = db.prepareStatement(query1);
-      stmt1.setString(1, user);
-      stmt1.setString(2, Crypto.SHA256(password));
-      if (stmt1.executeQuery().next()) {
-        return true;
-      }
-      return false;
+      PreparedStatement stmt = db.prepareStatement(query);
+      stmt.setString(1, user);
+      stmt.setString(2, Crypto.SHA256(password));
+      ResultSet rs = stmt.executeQuery();
+      result = rs.getString("Roles");
     } catch (SQLException e) {
-      return false;
+      System.out.println(e);
     }
+
+    List<String> roles = Arrays.asList(result.split("\\s*,\\s*"));
+    // Get Functions from RBAC Group
+    String functions = new String();
+
+    query = "SELECT Functions FROM RBAC WHERE Roles = ?";
+    for (String role : roles) {
+      System.out.println("RBAC Roles "+ role);
+      try {
+        PreparedStatement stmt = db.prepareStatement(query);
+        stmt.setString(1, role);
+        ResultSet rs = stmt.executeQuery();
+        functions  += rs.getString("Functions")+",";
+      } catch (SQLException e) {
+        System.out.println(e);
+      }
+    }
+  
+    return functions;
   }
 
   public boolean addACL(String user, String password, String list) {

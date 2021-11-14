@@ -15,36 +15,39 @@ public class Printer extends UnicastRemoteObject implements IPrinter  {
     public String command(String command) throws RemoteException {
         System.out.println("Printer: Recived Command: "+command);
         command = SimulatedCrypto.DeKCG(command);
-        String functions = SimulatedCrypto.getFunctions(command);
         
+        String functions = SimulatedCrypto.getFunctions(command);
+
         String[] commands = command.split(",");
-        if (!functions.contains(commands[1])) {
+
+
+        if (!functions.contains(commands[0])) {
             return SimulatedCrypto.KCG("Clearence not valid");
         }else{
-            System.out.println("Printer: Decrypted messages contains function");
-        }
-        switch(commands[1]){
+            System.out.println("Printer: Decrypted messages contains function: "+functions);   
+        switch(commands[0]){
             case "start":
                 return SimulatedCrypto.KCG(start());
             case "stop":
                 return SimulatedCrypto.KCG(stop());
             case "print":
-                return SimulatedCrypto.KCG(print(commands[2], commands[3]));
+                return SimulatedCrypto.KCG(print(commands[1], commands[2]));
             case "queue":
-                return SimulatedCrypto.KCG(queue(commands[2]));
+                return SimulatedCrypto.KCG(queue(commands[1]));
             case "topQueue":
-                return SimulatedCrypto.KCG(topQueue(commands[2], commands[3]));
+                return SimulatedCrypto.KCG(topQueue(commands[1], commands[2]));
             case "restart":
                 return SimulatedCrypto.KCG(restart());
             case "status":
-                return SimulatedCrypto.KCG(status(commands[2]));
+                return SimulatedCrypto.KCG(status(commands[1]));
             case "readConfig":
-                return SimulatedCrypto.KCG(readConfig(commands[2]));
+                return SimulatedCrypto.KCG(readConfig(commands[1]));
             case "setConfig":
-                return SimulatedCrypto.KCG(setConfig(commands[2], commands[3]));
+                return SimulatedCrypto.KCG(setConfig(commands[1], commands[2]));
             default:
                 return SimulatedCrypto.KCG("Command does not exist!!!");
         }
+    }
     };
 
     // Implementation of the query interface
