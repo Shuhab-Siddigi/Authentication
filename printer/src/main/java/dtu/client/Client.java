@@ -68,7 +68,7 @@ public class Client {
     //{|ath,C,p,KCG,T1|}skag)
     System.out.println("Client: Sendt Message: "+ticket);
     response = printer.reciveTicket(ticket);
-    System.out.println("Client: Sendt Response: "+response);
+    System.out.println("Client: Got Response: "+response);
 
     String command = "start";
     command = SimulatedCrypto.KCG(command+","+ticket);
@@ -120,6 +120,9 @@ public class Client {
     ticket = ticket.substring(ticket.lastIndexOf("{"),ticket.length());
     
     //{|ath,C,p,KCG,T1|}skag)
+    System.out.println("Client: Sendt Message: "+ticket);
+    response = printer.reciveTicket(ticket);
+    System.out.println("Client: Got Response: "+response);
 
     String command = "start";
     command = SimulatedCrypto.KCG(command+","+ticket);
@@ -130,7 +133,7 @@ public class Client {
 
     command = "print,somefile,Xerox";
     command = SimulatedCrypto.KCG(command+","+ticket);
-    System.out.println("Client: Sending Command: " + command);
+    System.out.println("Client: Sending Command: " + command+","+ticket);
     result = printer.command(command);
     result = SimulatedCrypto.DeKCG(result);
     System.out.println("Client: Recieved: " + result);
