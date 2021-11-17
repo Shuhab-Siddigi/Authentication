@@ -4,50 +4,44 @@ participant Auth as A
 participant Database as DB
 participant Printer as P
 
-
-A -> DB: Instantiated DB
-DB -> A: Read Users
-DB -> A: Got RBAC Table
-DB -> A: Got ACL Table
-
 C -> A: Sendt Message:{Alice,Auth,exp(ge,X)}PrivateKey(Client)
 A -> C: Returning: {Alice,Auth,exp(ge,Y)}PrivateKey(Auth)
-C -> A: Login attempt {|{Alice,Alice,Auth,Printer}PrivateKey(Client)|}exp(exp(ge,X),Y) 
+
+C -> A: Login attempt {|{Alice,Alice,Auth,Printer}PrivateKey(Client)|}exp(exp(ge,X),Y)
+A -> DB : (user,{password})
+DB -> A: User is in DB, returning (functions) (ACK)
 A -> C: Returning: {|{|Auth,Printer,KCG,1637158592103,{|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}exp(exp(ge,X),Y)
 
 C -> P: Sendt Ticket: {|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}
 P -> C: Sendt Response: {|ACK|}KCG
+
 C -> P: Sending Command: {|start,{|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
 P -> C: Running Function print(String somefile, String Xerox)
+
 C -> P: Sending Command: {|print,somefile,Xerox,{|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
 P -> C: Running Function print(String somefile, String Xerox)
-
-
 @enduml
 
 @startuml RBAC
-
 actor Client as C
-participant Server as S
+participant Auth as A
+participant Database as DB
 participant Printer as P
-
-RUNNING ACL VERSION
-Auth -> DB: Instantiated DB
-DB -> Auth: Read Users
-DB -> Auth: Got RBAC Table
-DB -> Auth: Got ACL Table
 
 C -> A: Sendt Message:{Bob,Auth,exp(ge,X)}PrivateKey(Client)
 A -> C: Returning: {Bob,Auth,exp(ge,Y)}PrivateKey(Auth)
+
 C -> A: Login attempt: {|{Bob,Bob,Auth,Printer}PrivateKey(Client)|}exp(exp(ge,X),Y)
-A -> C: Returning: {|{|Auth,Printer,KCG,1637158592107,{|Auth,Bob,KCG,1637158592107,[start,stop,restart,status,readConfig,setConfig,]|}skag|}|}exp(exp(ge,X),Y)
-C -> P: Sending Command: {|start,{|Auth,Bob,KCG,1637158592107,[start,stop,restart,status,readConfig,setConfig,]|}skag|}|}KCG
+A -> DB : (user,{password})
+DB -> A: User is in DB, returning (functions) (ACK)
 A -> C: Returning: {|{|Auth,Printer,KCG,1637158592107,{|Auth,Bob,KCG,1637158592107,[start,stop,restart,status,readConfig,setConfig,]|}skag|}|}exp(exp(ge,X),Y)
 
-C -> P: Sendt Ticket: {|Auth,Bob,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}
+C -> P: Sendt Ticket: {|Auth,Bob,KCG,1637160238819,[start,stop,restart,status,readConfig,setConfig,]|}skag|}
 P -> C: Sendt Response: {|ACK|}KCG
-C -> P: Sending Command: {|start,{|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
+
+C -> P: Sending Command: {|start,{|Auth,Bob,KCG,1637160238819,[start,stop,restart,status,readConfig,setConfig,]|}skag|}|}KCG
 P -> C: Running Function print(String somefile, String Xerox)
-C -> P: Sending Command: {|print,somefile,Xerox,{|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
-P -> C: Running Function print(String somefile, String Xerox)
+
+C -> P: Sending Command:  {|print,{|Auth,Bob,KCG,1637160238819,[start,stop,restart,status,readConfig,setConfig,]|}skag|}|}KCG
+P -> C: Client: Recieved: Clearence not valid
 @enduml
