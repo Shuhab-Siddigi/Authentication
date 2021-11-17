@@ -1,33 +1,26 @@
 @startuml ACL 
 actor Client as C
-participant Server as S
+participant Auth as A
+participant Database as DB
 participant Printer as P
 
-Auth: Recived Message {Alice,Auth,exp(ge,X)}PrivateKey(Client)
-Auth: Returning: {Alice,Auth,exp(ge,Y)}PrivateKey(Auth)
-Auth: Recieved: {|{Alice,Alice,Auth,Printer}PrivateKey(Client)|}exp(exp(ge,X),Y)
-Auth: user Alice succesfully logged in.
-Auth: Returning: {|{|Auth,Printer,KCG,1637154876797,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}exp(exp(ge,X),Y)
-Printer: Recieved Ticket: {|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}
-Printer: Recived Command: {|start,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
-Printer: Decrypted messages contains function
-Printer: Running Function start()
-Printer: Recived Command: {|print,somefile,Xerox,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
-Printer: Decrypted messages contains function
-Printer: Running Function print(String somefile, String Xerox)
 
-Client: Connected to Auth
-Client: Send first half
-Client: Sendt Message:{Alice,Auth,exp(ge,X)}PrivateKey(Client)
-Client: Recieved: {Alice,Auth,exp(ge,Y)}PrivateKey(Auth)
-Client: Login attempt:
-Client: Recieved: {|{|Auth,Printer,KCG,1637154876797,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}exp(exp(ge,X),Y)
-Client: Sendt Message: {|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}
-Client: Sendt Response: {|ACK|}KCG
-Client: Sending Command: {|start,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
-Client: Recieved: Printer: Running Function start()
-Client: Sending Command: {|print,somefile,Xerox,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
-Client: Recieved: Printer: Running Function print(String somefile, String Xerox)
+A -> DB: Instantiated DB
+DB -> A: Read Users
+DB -> A: Got RBAC Table
+DB -> A: Got ACL Table
+
+C -> A: Sendt Message:{Alice,Auth,exp(ge,X)}PrivateKey(Client)
+A -> C: Returning: {Alice,Auth,exp(ge,Y)}PrivateKey(Auth)
+C -> A: Login attempt {|{Alice,Alice,Auth,Printer}PrivateKey(Client)|}exp(exp(ge,X),Y) 
+A -> C: Returning: {|{|Auth,Printer,KCG,1637158592103,{|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}exp(exp(ge,X),Y)
+
+C -> P: Sendt Ticket: {|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}
+P -> C: Sendt Response: {|ACK|}KCG
+C -> P: Sending Command: {|start,{|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
+P -> C: Running Function print(String somefile, String Xerox)
+C -> P: Sending Command: {|print,somefile,Xerox,{|Auth,Alice,KCG,1637158592103,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
+P -> C: Running Function print(String somefile, String Xerox)
 
 
 @enduml
@@ -44,28 +37,6 @@ DB -> Auth: Read Users
 DB -> Auth: Got RBAC Table
 DB -> Auth: Got ACL Table
 
-Auth: Recived Message {Alice,Auth,exp(ge,X)}PrivateKey(Client)
-Auth: Returning: {Alice,Auth,exp(ge,Y)}PrivateKey(Auth)
-Auth: Recieved: {|{Alice,Alice,Auth,Printer}PrivateKey(Client)|}exp(exp(ge,X),Y)
-Auth: user Alice succesfully logged in.
-Auth: Returning: {|{|Auth,Printer,KCG,1637154876797,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}exp(exp(ge,X),Y)
-Printer: Recieved Ticket: {|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}
-Printer: Recived Command: {|start,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
-Printer: Decrypted messages contains function
-Printer: Running Function start()
-Printer: Recived Command: {|print,somefile,Xerox,{|Auth,Alice,KCG,1637154876797,[print,queue,topQueue,start,stop,restart,status,readConfig,setConfig]|}skag|}|}KCG
-Printer: Decrypted messages contains function
-Printer: Running Function print(String somefile, String Xerox)
 
-Client: Connected to Auth
-Client: Send first half
-Client: Sendt Message:{Bob,Auth,exp(ge,X)}PrivateKey(Client)
-Client: Recieved: {Bob,Auth,exp(ge,Y)}PrivateKey(Auth)
-Client: Login attempt:
-Client: Recieved: {|{|Auth,Printer,KCG,1637154876800,{|Auth,Bob,KCG,1637154876800,[start,stop,restart,status,readConfig,setConfig,]|}skag|}|}exp(exp(ge,X),Y)
-Client: Sending Command: {|start,{|Auth,Bob,KCG,1637154876800,[start,stop,restart,status,readConfig,setConfig,]|}skag|}|}KCG
-Client: Recieved: Printer: Running Function start()
-Client: Sending Command: {|print,somefile,Xerox,{|Auth,Bob,KCG,1637154876800,[start,stop,restart,status,readConfig,setConfig,]|}skag|}|}KCG
-Client: Recieved: Clearence not valid
 
 @enduml
