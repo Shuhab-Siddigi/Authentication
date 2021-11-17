@@ -79,7 +79,7 @@ public class Client {
 
     command = "print,somefile,Xerox";
     command = SimulatedCrypto.KCG(command+","+ticket);
-    System.out.println("Client: Sending Command: " + command);
+    System.out.println("Client: Sending Command: " + command+","+ticket);
     result = printer.command(command);
     result = SimulatedCrypto.DeKCG(result);
     System.out.println("Client: Recieved: " + result);
